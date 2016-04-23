@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Text to LCD</title>
+<script type="text/javascript">
+    
+    function send() {
+        var data = document.getElementById("data").value;
+        //alert("In func send()");
+        path = "http://10.0.0.4:8080?data=" + data;
+        request(path);
+        document.getElementById("data").value = '';
+    }
+
+    function reset() {
+        path = "http://10.0.0.4:8080?reset=true";
+        request(path);
+    }
+
+    function request(path) {
+        xhttp = new XMLHttpRequest();
+        xhttp.open("GET", path, true);
+        xhttp.onreadystatechange = function () {
+            if (xhttp.status == 200) {
+                document.getElementById("response").innerHTML = xhttp.responseText;
+            }
+        }
+        xhttp.send();
+    }
+
+    function enter() {
+        var x = event.key;
+        if(x == "Enter"){
+            alert("sending");
+            send();
+        }
+    }
+</script>
+</head>
+<body>
+<br />
+<h2 style="color:Blue; font-family:Courier">Enter text to display on LCD</h2>
+<hr style="color:Blue" />
+<br />
+<input id="data" maxlength="15" onkeypress="enter()"/>
+<br />
+<br />
+<button  onclick="send()"> SEND </button>
+<br />
+<br />
+<button onclick="reset()"> RESET </button>
+<br /><br />
+<h3>--------------------------DEBUGGING --------------------------</h3>
+<p style="color:Green" id="response">
+<i>Response text here</i>
+</p>
+<br />
+<br />
+<!----------------------------------- redudant -----------------------------------------------------
+<form action="http://10.0.0.4:8080" method="get" target="response">
+<input maxlength="15" name="data" /> &nbsp &nbsp <input type="submit" value="SEND" />
+</form>
+------------------------------------------------------------------------------------------------//-->
+</body>
+</html>
